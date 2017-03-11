@@ -29,7 +29,9 @@ time_t Convert::TimeConvert::systemtime2time_t(const SYSTEMTIME & st)
 */
 SYSTEMTIME Convert::TimeConvert::time_t2systemtime(const time_t& t)
 {
-	tm tt = *localtime(&t);
+	//tm tt = *localtime(&t);
+	tm tt;
+	localtime_s(&tt,&t);
 
 	SYSTEMTIME st = { 1900 + tt.tm_year,
 		1 + tt.tm_mon,
@@ -103,14 +105,75 @@ std::string Convert::TimeConvert::systemtime2string(const SYSTEMTIME & st)
 }
 
 #ifdef _WIN32
-std::string Convert::StringConvert::cstring2string(const CString & cstr)
+stringT Convert::StringConvert::cstring2string(const CString & cstr)
 {
-#ifdef UNICODE
-	std::wstring str;
-#else
-	std::string str;
-#endif
-	str = cstr.GetBuffer(0);
+	stringT str;
+	//str = (char*)cstring2char(cstr);
 	return str;
 }
+CString Convert::StringConvert::string2cstring(const std::string str)
+{
+	CString ret = _T("");
+	ret = str.c_str();
+	return ret;
+}
 #endif
+std::string Convert::StringConvert::dword2string(const DWORD& value)
+{
+	std::string ret = "";
+	char szHex[10] = {0};
+	char pch[] = "0123456789ABCDEF";
+	szHex[0] = '0';
+	szHex[1] = 'x';
+
+	for (int i = 0; i < 8; i++) {
+		szHex[2 + i] = *(pch + (((value) >> (28 - i * 4)) & 0xF));
+	}
+	ret = szHex;
+
+	return ret;
+}
+DWORD Convert::StringConvert::hexstring2dword(const std::string val)
+{
+	char szHex[10];
+	for (unsigned int i = 0; i<val.length(); i++)
+		szHex[i] = val[i];
+	szHex[val.length()] = '\0';
+
+	DWORD dwValue = 0;
+	if (strstr(szHex, "0x")) {
+		strcpy_s(szHex, szHex + 2);
+		szHex[8] = '\0';
+	}
+	_strupr_s(szHex);
+	char chrTmp[] = "0123456789ABCDEF";
+	char *pFind = NULL;
+	for (int i = 0; i < 8; i++) {
+		pFind = strchr(chrTmp, szHex[i]);
+		dwValue = dwValue | (((DWORD)(pFind - chrTmp) << (7 - i) * 4) & 0xFFFFFFFF);
+	}
+	return dwValue;
+}
+std::string Convert::StringConvert::tchar2string(TCHAR * pTChar)
+{
+	int nLen = WideCharToMultiByte(CP_ACP, 0, pTChar, -1, NULL, 0, NULL, NULL);
+
+	char* chRtn = new char[nLen * sizeof(char)];
+
+	WideCharToMultiByte(CP_ACP, 0, pTChar, -1, chRtn, nLen, NULL, NULL);
+
+	std::string str(chRtn);
+
+	return str;
+}
+
+char * Convert::StringConvert::cstring2char(CString cstr)
+{
+	int len = cstr.GetLength();
+	char* chRtn = (char*)malloc((len * 2 + 1) * sizeof(char));//CString的长度中汉字算一个长度   
+	memset(chRtn, 0, 2 * len + 1);
+	USES_CONVERSION;
+	strcpy_s(chRtn, 2 * len + 1, OLE2A(cstr.LockBuffer()));
+	return (LPSTR)chRtn;
+}
+

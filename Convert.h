@@ -5,6 +5,12 @@
 
 using namespace std;
 
+#ifdef UNICODE
+typedef std::wstring stringT;
+#else
+typedef std::string stringT;
+#endif
+
 namespace Convert {
 	namespace TimeConvert {
 		time_t systemtime2time_t(const SYSTEMTIME& st);
@@ -15,11 +21,17 @@ namespace Convert {
 	}
 	namespace StringConvert {
 #ifdef _WIN32
-		std::string cstring2string(const CString& cstr);
-		CString string2cstring(std::string str);
+		stringT cstring2string(const CString& cstr);
+		CString string2cstring(const std::string str);
 #else
+		
 
 #endif
+		std::string dword2string(const DWORD& value);
+		DWORD hexstring2dword(const std::string val);
+
+		std::string tchar2string(TCHAR* pTChar);
+		char* cstring2char(CString cstr);
 	}
 }
 
