@@ -105,6 +105,16 @@ std::string Convert::TimeConvert::systemtime2string(const SYSTEMTIME & st)
 }
 
 #ifdef _WIN32
+/*
+ * 将MFC的CString类型转为string类型 
+ * 
+ * param
+ *		cstr
+ *
+ * return
+ *		返回转换后的string类型
+ *
+*/
 stringT Convert::StringConvert::cstring2string(const CString & cstr)
 {
 	stringT str;

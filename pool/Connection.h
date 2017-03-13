@@ -1,3 +1,6 @@
+#ifndef UTILITY_TOOLS_CONNECTION_H
+#define UTILITY_TOOLS_CONNECTION_H
+
 #include <mysql.h>
 #include <memory>
 
@@ -27,3 +30,4 @@ public:
 	MYSQL_RES* Execute(const char* pchSql);
 
 };
+#endif
