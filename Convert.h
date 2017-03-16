@@ -2,6 +2,8 @@
 #define UTILITY_TOOLS_CONVERT_H
 #include <string>
 #include <time.h>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -32,6 +34,8 @@ namespace Convert {
 
 		std::string tchar2string(TCHAR* pTChar);
 		char* cstring2char(CString cstr);
+
+		std::vector<std::string> split(const std::string& value,const std::string& delim,bool ignored);
 	}
 }
 

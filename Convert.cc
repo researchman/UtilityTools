@@ -187,3 +187,44 @@ char * Convert::StringConvert::cstring2char(CString cstr)
 	return (LPSTR)chRtn;
 }
 
+/*
+ * 将value按delim进行分隔，分隔后的string值保存到vector中
+ *
+ * param
+ *		value
+ *		delim
+ *		ignored
+ *
+ * return
+ *		分隔后的vector数组
+ *
+*/
+std::vector<std::string> Convert::StringConvert::split(const std::string& source, const std::string& delim, bool ignored)
+{
+	std::vector<std::string> ret;
+
+	std::string value = source;
+	//将出现的所有分隔符都替换成为一个相同的字符（分隔符字符串的第一个）  
+	std::replace_if(value.begin(), value.end(), [&](const char& c) {if (delim.find(c) != std::string::npos) { return true; } else { return false; }}, delim.at(0));
+	//找到第一个分隔符的位置
+	size_t pos = value.find(delim.at(0));
+	std::string addedString = "";
+	while (pos != std::string::npos) {
+		//截取字符串
+		addedString = value.substr(0, pos);
+		if (!addedString.empty() || !ignored) {
+			ret.push_back(addedString);
+		}
+		//擦除截取的字符串
+		value.erase(value.begin(), value.begin() + pos + 1);
+		pos = value.find(delim.at(0));
+	}
+	//
+	addedString = value;
+	if (!addedString.empty() || !ignored) {
+		ret.push_back(addedString);
+	}
+
+	return ret;
+}
+
