@@ -4,6 +4,8 @@
 #include <time.h>
 #include <vector>
 #include <algorithm>
+#include <Windows.h>
+#include <atlstr.h>
 
 using namespace std;
 
