@@ -4,7 +4,6 @@
 using namespace algorithm::sort;
 using namespace std;
 
-
 void print_vector(const std::vector<double> vt){
     for(auto v:vt){
         cout<<v<<",";
