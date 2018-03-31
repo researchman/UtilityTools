@@ -2,19 +2,20 @@
 #include "sort.h"
 
 using namespace algorithm::sort;
+using namespace std;
 
 
 void print_vector(const std::vector<double> vt){
     for(auto v:vt){
-        std::cout<<v<<",";
+        cout<<v<<",";
     }
-    std::cout<<std::endl;
+    cout<<endl;
 }
 
 int main(void){
 
-    std::vector<double> vt;
-    for(int8_t i = 10;i>0;--i){
+    vector<double> vt;
+    for(int i = 10;i>0;--i){
         vt.push_back(i*1.1);
     }
 
