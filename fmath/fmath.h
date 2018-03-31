@@ -1,7 +1,7 @@
 #ifndef FMATH_H
 #define FMATH_H
 
-namespace Math {
+namespace math {
 
 
 }
