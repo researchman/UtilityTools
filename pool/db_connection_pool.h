@@ -4,7 +4,7 @@
 #include <list>
 #include <mutex>
 
-namespace Pool {
+namespace pool {
 	template<class Typename>
 	class DBConnectionPool {
 	public:
@@ -14,9 +14,9 @@ namespace Pool {
 		int min;
 		int max;
 
-		//空闲队列
+		//锟斤拷锟叫讹拷锟斤拷
 		std::list<Typename> idleQueue;
-		//使用中的队列
+		//使锟斤拷锟叫的讹拷锟斤拷
 		std::list<Typename> busyQueue;
 
 		std::mutex idleMutex;
@@ -58,13 +58,13 @@ namespace Pool {
 		{
 			return NULL;
 		}
-		//从空闲队列中取出一个连接，并从空闲队列中删除
+		//锟接匡拷锟叫讹拷锟斤拷锟斤拷取锟斤拷一锟斤拷锟斤拷锟接ｏ拷锟斤拷锟接匡拷锟叫讹拷锟斤拷锟斤拷删锟斤拷
 		std::lock_guard<std::mutex> lg(idleMutex);
 		Typename connection = idleQueue.front();
 		idleQueue.pop_front();
 
 		//std::lock_guard<std::mutex> lg_busy(busyMutex);
-		//将此空闲连接加入到工作中队列中
+		//锟斤拷锟剿匡拷锟斤拷锟斤拷锟接硷拷锟诫到锟斤拷锟斤拷锟叫讹拷锟斤拷锟斤拷
 		busyQueue.push_back(connection);
 
 		return connection;
